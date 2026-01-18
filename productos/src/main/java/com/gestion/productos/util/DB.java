@@ -27,8 +27,6 @@ public class DB {
                 props.getProperty("db.password")
             );
             
-            System.out.println("Conexión establecida correctamente.");
-
         } catch (IOException e) {
             System.out.println("Error al leer el archivo de configuración.");
             e.printStackTrace();

@@ -12,8 +12,16 @@ import java.util.List;
  * Se encarga del acceso a datos de la tabla PRODUCTS.
  * Esta clase no imprime por consola: devuelve objetos/listas para que Service/Main decidan qué mostrar.
 */
-
 public class ProductDAO {
+
+    // Método auxiliar para evitar repetir código 5 veces
+    private Product buildProduct(ResultSet rs) throws SQLException {
+        return new Product(
+            rs.getInt("ID_PRODUCT"),
+            rs.getInt("CLIENT_ID"),
+            rs.getString("NAME")
+        );
+    }
 
     /**
      * Busca un producto por su ID (campo ID_PRODUCT).
@@ -21,24 +29,18 @@ public class ProductDAO {
      * @param id id del producto
      * @return Product si existe; null si no existe
     */
-
     public Product findById(int id) {
         
         String sql = "SELECT ID_PRODUCT, CLIENT_ID, NAME FROM PRODUCTS WHERE ID_PRODUCT = ?";
 
         try (Connection con = DB.getConnection();
-            
-            PreparedStatement stmt = con.prepareStatement(sql)) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Product(
-                        rs.getInt("ID_PRODUCT"),
-                        rs.getInt("CLIENT_ID"),
-                        rs.getString("NAME")
-                    );
+                    return buildProduct(rs);
                 }
             }
 
@@ -57,25 +59,19 @@ public class ProductDAO {
      * @param name     nombre del producto
      * @return Product si existe; null si no existe
     */
-
     public Product finByClientAndName(int clientId, String name) {
         
         String sql = "SELECT ID_PRODUCT, CLIENT_ID, NAME FROM PRODUCTS WHERE CLIENT_ID = ? AND NAME = ?";
 
         try (Connection con = DB.getConnection();
-            
-            PreparedStatement stmt = con.prepareStatement(sql)) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setInt(1, clientId);
             stmt.setString(2, name);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Product(
-                        rs.getInt("ID_PRODUCT"),
-                        rs.getInt("CLIENT_ID"),
-                        rs.getString("NAME")
-                    );
+                    return buildProduct(rs);
                 }
             }
 
@@ -92,25 +88,19 @@ public class ProductDAO {
      * @param clientId id del cliente (CLIENT_ID)
      * @return lista de productos del cliente; si no hay, lista vacía
     */
-
     public List<Product> finByClientId(int clientId) {
         
         String sql = "SELECT ID_PRODUCT, CLIENT_ID, NAME FROM PRODUCTS WHERE CLIENT_ID = ? ORDER BY ID_PRODUCT";
         List<Product> products = new ArrayList<>();
 
         try (Connection con = DB.getConnection();
-            
-            PreparedStatement stmt = con.prepareStatement(sql)) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setInt(1, clientId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    products.add(new Product(
-                        rs.getInt("ID_PRODUCT"),
-                        rs.getInt("CLIENT_ID"),
-                        rs.getString("NAME")
-                    ));
+                    products.add(buildProduct(rs));
                 }
             }
 
@@ -127,22 +117,17 @@ public class ProductDAO {
      *
      * @return lista de productos; si no hay, lista vacía
     */
-
     public List<Product> findAll() {
 
         String sql = "SELECT ID_PRODUCT, CLIENT_ID, NAME FROM PRODUCTS ORDER BY CLIENT_ID, ID_PRODUCT";
         List<Product> products = new ArrayList<>();
 
         try (Connection con = DB.getConnection();
-            PreparedStatement stmt = con.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                products.add(new Product(
-                    rs.getInt("ID_PRODUCT"),
-                    rs.getInt("CLIENT_ID"),
-                    rs.getString("NAME")
-                ));
+                products.add(buildProduct(rs));
             }
 
         } catch (SQLException e) {
@@ -164,23 +149,21 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
 
         try (Connection con = DB.getConnection();
-        PreparedStatement stmt = con.prepareStatement(sql)) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            
             stmt.setString(1, name);
             stmt.setInt(2, clientId);
 
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                products.add(new Product(
-                    rs.getInt("ID_PRODUCT"),
-                    rs.getInt("CLIENT_ID"),
-                    rs.getString("NAME")
-                ));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    products.add(buildProduct(rs));
+                }
             }
-        }
 
-    } catch (SQLException e) {
-        throw new RuntimeException("Error en ProductDAO.findSameNameInOtherClients: " + e.getMessage(), e);
-    }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error en ProductDAO.findSameNameInOtherClients: " + e.getMessage(), e);
+        }
+        
         return products;
     }
 
@@ -192,15 +175,13 @@ public class ProductDAO {
      * @param name      nombre del producto
      * @return id generado si se inserta; -1 si no se insertó ninguna fila
     */
-
     public int insertProduct(int idCliente, String name) {
         
         String sql = "INSERT INTO PRODUCTS (CLIENT_ID, NAME) VALUES (?, ?)";
         int generatedId = -1;
 
         try (Connection con = DB.getConnection();
-            
-            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, idCliente);
             stmt.setString(2, name);

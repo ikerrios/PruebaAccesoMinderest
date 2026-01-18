@@ -1,0 +1,5 @@
+com.gestion.productos.app
+com.gestion.productos.dao
+com.gestion.productos.model
+com.gestion.productos.services
+com.gestion.productos.util

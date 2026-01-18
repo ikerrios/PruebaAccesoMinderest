@@ -22,7 +22,6 @@ Además, antes de establecer equivalencia se listan en consola **CLIENTS** y **P
 - Maven
 - MySQL (o MariaDB)
 - JDBC (DAO)
-- Proyecto inicializado con Spring Initializr (estructura Maven + wrapper), pero la ejecución principal de la prueba está en `Main` (consola)
 
 ---
 
@@ -60,7 +59,7 @@ PruebaAccesoMinderest/
          │           └─ util/
          │              └─ DB.java
          └─ resources/
-            └─ application.properties
+            └─ database.properties
 ```
 ## Base de datos
 
@@ -98,8 +97,8 @@ Valores por defecto:
 - Host: `localhost`
 - Puerto: `3306`
 - BD: `MINDEREST`
-- Usuario: `root`
-- Password: `root`
+- Usuario: `user_minderest`
+- Password: `@minderest1412`
 
 Si tu MySQL usa otra contraseña o usuario, cambia esas constantes en `DB.java`.
 

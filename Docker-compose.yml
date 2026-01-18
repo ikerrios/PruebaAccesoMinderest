@@ -8,8 +8,7 @@ services:
     ports:
       - "8082:80"
     volumes:
-      # Mapea tu carpeta local 'doc' al servidor web
-      - ./doc:/usr/local/apache2/htdocs/
+      - ./productos/doc/apidocs:/usr/local/apache2/htdocs/
 
   # 2. Contenedor de MySQL con el usuario nuevo
   mysql:
@@ -20,7 +19,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       # Nombre de la base de datos inicial
       MYSQL_DATABASE: MINDEREST
-      # CREACIÓN DEL USUARIO "DECENTE" (Requisito del profesor)
+      # Usuario nuevo
       MYSQL_USER: user_minderest
       MYSQL_PASSWORD: .minderest1412
     ports:

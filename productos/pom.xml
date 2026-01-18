@@ -33,6 +33,9 @@
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
+
+          <reportOutputDirectory>${project.basedir}/doc</reportOutputDirectory>
+          <destDir>.</destDir>
         </configuration>
       </plugin>
 

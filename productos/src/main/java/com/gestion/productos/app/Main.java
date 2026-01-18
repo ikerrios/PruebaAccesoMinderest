@@ -41,10 +41,6 @@ public class Main {
         sc.close();
     }
 
-    // ==========================================
-    // MÉTODOS PRIVADOS PARA CADA OPCIÓN
-    // ==========================================
-
     /**
      * Gestiona la opción 1 del menú.
      * Pide los datos necesarios y llama al servicio para dar de alta el producto.
@@ -127,10 +123,6 @@ public class Main {
 
         imprimirListaProductos(eq, "Productos equivalentes");
     }
-
-    // ==========================================
-    // MÉTODOS AUXILIARES
-    // ==========================================
 
     private static void mostrarMenu() {
         System.out.println("\n==== MENU MINDEREST ====");

@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   # 1. Contenedor Apache para cargar la carpeta doc (Javadoc)
   web-docs:
@@ -19,9 +18,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
       # Nombre de la base de datos inicial
       MYSQL_DATABASE: MINDEREST
-      # Usuario nuevo
-      MYSQL_USER: user_minderest
-      MYSQL_PASSWORD: .minderest1412
     ports:
       - "3307:3306"
     volumes:
